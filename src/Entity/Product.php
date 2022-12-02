@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -13,68 +14,58 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Image = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $category = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $price = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $User = null;
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?User $seller = null;
+
+    #[ORM\ManyToOne(inversedBy: 'product')]
+    private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $content = null;
+    private ?string $image = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $quantity = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $quantity = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-
-
-    public function getImage(): ?string
+    public function getTitle(): ?string
     {
-        return $this->Image;
+        return $this->title;
     }
 
-    public function setImage(?string $Image): self
+    public function setTitle(string $title): self
     {
-        $this->Image = $Image;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getDescription(): ?string
     {
-        return $this->nom;
+        return $this->description;
     }
 
-    public function setNom(?string $nom): self
+    public function setDescription(?string $description): self
     {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?string $category): self
-    {
-        $this->category = $category;
+        $this->description = $description;
 
         return $this;
     }
@@ -91,165 +82,71 @@ class Product
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getSeller(): ?User
     {
-        return $this->User;
+        return $this->seller;
     }
 
-    public function setUser(?string $User): self
+    public function setSeller(?User $seller): self
     {
-        $this->User = $User;
+        $this->seller = $seller;
 
         return $this;
     }
 
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?string
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(?string $quantity): self
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-}
-<?php
-
-namespace App\Entity;
-
-use App\Repository\ProductRepository;
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
-{
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Image = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $category = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $price = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $User = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $content = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $quantity = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-
-
-    public function getImage(): ?string
-    {
-        return $this->Image;
-    }
-
-    public function setImage(?string $Image): self
-    {
-        $this->Image = $Image;
-
-        return $this;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(?string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?string $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getImage(): ?string
     {
-        return $this->price;
+        return $this->image;
     }
 
-    public function setPrice(?string $price): self
+    public function setImage(?string $image): self
     {
-        $this->price = $price;
+        $this->image = $image;
 
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->User;
+        return $this->createdAt;
     }
 
-    public function setUser(?string $User): self
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
-        $this->User = $User;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->content;
+        return $this->updatedAt;
     }
 
-    public function setContent(?string $content): self
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
-        $this->content = $content;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
-
-    public function getQuantity(): ?string
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    public function setQuantity(?string $quantity): self
+    public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
 
