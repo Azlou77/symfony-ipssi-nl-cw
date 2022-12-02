@@ -41,6 +41,9 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $Statut = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +152,18 @@ class Product
     public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function isStatut(): ?bool
+    {
+        return $this->Statut;
+    }
+
+    public function setStatut(?bool $Statut): self
+    {
+        $this->Statut = $Statut;
 
         return $this;
     }
